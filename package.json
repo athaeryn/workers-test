@@ -1,0 +1,19 @@
+{
+  "name": "cluster-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "res:watch": "BS_WATCH_CLEAR=1 rescript build -with-deps -w",
+    "start": "nodemon src/Index.bs.js"
+  },
+  "keywords": [],
+  "author": "Ryn Anderson",
+  "private": true,
+  "dependencies": {
+    "@ryyppy/rescript-promise": "^2.1.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "rescript": "^9.1.4"
+  }
+}

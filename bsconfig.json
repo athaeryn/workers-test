@@ -1,0 +1,25 @@
+{
+  "name": "cluster-test",
+  "namespace": false,
+  "reason": {
+    "react-jsx": 3
+  },
+  "refmt": 3,
+  "bs-dependencies": ["@ryyppy/rescript-promise"],
+  "bsc-flags": ["-bs-super-errors", "-open Belt"],
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "warnings": {
+    "number": "-3",
+    "error": "+101+8"
+  }
+}
