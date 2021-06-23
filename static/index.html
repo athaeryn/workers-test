@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+  <head>
+    <title>Cluster Test</title>
+  </head>
+
+  <body>
+    <h1>Hello!</h1>
+
+    <button id="trigger">Test API</button>
+
+    <script>
+      let button = document.getElementById("trigger");
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        fetch("/fake_api")
+          .then((res) => res.text())
+          .then((message) => alert(message));
+      });
+    </script>
+  </body>
+</html>

@@ -3,9 +3,14 @@ type response = {send: (. string) => unit}
 
 type handler = (. request, response) => unit
 
+type middleware
+
 type app = {
   get: (. string, handler) => unit,
   listen: (. int, unit => unit) => unit,
+  use: (. middleware) => unit,
 }
 
 let createApp: unit => app
+
+let static: string => middleware
