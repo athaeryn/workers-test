@@ -1,5 +1,5 @@
 {
-  "name": "cluster-test",
+  "name": "workers-test",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
