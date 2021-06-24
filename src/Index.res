@@ -1,6 +1,6 @@
-let app = Express.createApp()
+let app = Express.App.make()
 
-let taskPool = Tasks.createPool()
+let taskPool = TaskPool.make()
 
 app.get(."/pause", (. _req, res) => {
   taskPool.run(Pause({howLongMs: 4200}))

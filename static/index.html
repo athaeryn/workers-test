@@ -11,6 +11,8 @@
     <button id="trigger-pause">Test "Pause"</button>
     <button id="trigger-fibonacci">Test "Fibonacci"</button>
 
+    <pre id="output-pause"></pre>
+
     <script>
       document
         .getElementById("trigger-pause")
@@ -18,7 +20,10 @@
           e.preventDefault();
           fetch("/pause")
             .then((res) => res.text())
-            .then((message) => alert(message));
+            .then((message) => {
+              document.getElementById("output-pause").innerText +=
+                message + "\n";
+            });
         });
       document
         .getElementById("trigger-fibonacci")

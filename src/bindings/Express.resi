@@ -7,12 +7,14 @@ type handler = (. request, response) => unit
 
 type middleware
 
-type app = {
-  get: (. string, handler) => unit,
-  listen: (. int, unit => unit) => unit,
-  use: (. middleware) => unit,
-}
+module App: {
+  type t = {
+    get: (. string, handler) => unit,
+    listen: (. int, unit => unit) => unit,
+    use: (. middleware) => unit,
+  }
 
-let createApp: unit => app
+  let make: unit => t
+}
 
 let static: string => middleware

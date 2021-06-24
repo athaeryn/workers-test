@@ -8,14 +8,15 @@ type handler = (. request, response) => unit
 
 type middleware
 
-type app = {
-  get: (. string, handler) => unit,
-  listen: (. int, unit => unit) => unit,
-  use: (. middleware) => unit,
+module App = {
+  type t = {
+    get: (. string, handler) => unit,
+    listen: (. int, unit => unit) => unit,
+    use: (. middleware) => unit,
+  }
+  @module
+  external make: unit => t = "express"
 }
-
-@module
-external createApp: unit => app = "express"
 
 @module("express")
 external static: string => middleware = "static"

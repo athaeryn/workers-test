@@ -10,6 +10,9 @@ external threadId: int = "threadId"
 external on: (t, @string [#message(Js.Json.t => unit)]) => unit = "on"
 
 @send
+external once: (t, @string [#message(Js.Json.t => unit)]) => unit = "once"
+
+@send
 external postMessage: (t, Js.Json.t) => unit = "postMessage"
 
 module Parent = {
@@ -20,6 +23,9 @@ module Parent = {
 
   @send
   external on: (t, @string [#message(Js.Json.t => unit)]) => unit = "on"
+
+  @send
+  external once: (t, @string [#message(Js.Json.t => unit)]) => unit = "once"
 
   @send
   external postMessage: (t, Js.Json.t) => unit = "postMessage"

@@ -5,6 +5,9 @@ let make: string => t
 let threadId: int
 
 let on: (t, @string [#message(Js.Json.t => unit)]) => unit
+
+let once: (t, @string [#message(Js.Json.t => unit)]) => unit
+
 let postMessage: (t, Js.Json.t) => unit
 
 module Parent: {
@@ -13,5 +16,8 @@ module Parent: {
   let port: t
 
   let on: (t, @string [#message(Js.Json.t => unit)]) => unit
+
+  let once: (t, @string [#message(Js.Json.t => unit)]) => unit
+
   let postMessage: (t, Js.Json.t) => unit
 }
