@@ -1,6 +1,9 @@
 type request
 type response = {send: (. string) => unit}
 
+@send
+external status: (response, int) => response = "status"
+
 type handler = (. request, response) => unit
 
 type middleware

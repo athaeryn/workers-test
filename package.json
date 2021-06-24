@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@ryyppy/rescript-promise": "^2.1.0",
+    "decco": "^1.5.0",
     "express": "^4.17.1",
     "nodemon": "^2.0.7",
     "rescript": "^9.1.4"

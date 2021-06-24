@@ -8,16 +8,26 @@
   <body>
     <h1>Hello!</h1>
 
-    <button id="trigger">Test API</button>
+    <button id="trigger-pause">Test "Pause"</button>
+    <button id="trigger-fibonacci">Test "Fibonacci"</button>
 
     <script>
-      let button = document.getElementById("trigger");
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-        fetch("/fake_api")
-          .then((res) => res.text())
-          .then((message) => alert(message));
-      });
+      document
+        .getElementById("trigger-pause")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          fetch("/pause")
+            .then((res) => res.text())
+            .then((message) => alert(message));
+        });
+      document
+        .getElementById("trigger-fibonacci")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          fetch("/fibonacci")
+            .then((res) => res.text())
+            .then((message) => alert(message));
+        });
     </script>
   </body>
 </html>

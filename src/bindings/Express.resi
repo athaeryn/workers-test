@@ -1,6 +1,8 @@
 type request
 type response = {send: (. string) => unit}
 
+let status: (response, int) => response
+
 type handler = (. request, response) => unit
 
 type middleware

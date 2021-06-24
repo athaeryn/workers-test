@@ -1,17 +1,38 @@
 let app = Express.createApp()
 
-let worker = Worker.make(Path.join([Path.dirname, "Worker_Entry.bs.js"]))
-let _worker2 = Worker.make(Path.join([Path.dirname, "Worker_Entry.bs.js"]))
+let taskPool = Tasks.createPool()
 
-app.get(."/fake_api", (. _req, res) => {
-  res.send(. "Hello from the fake API!")
+app.get(."/pause", (. _req, res) => {
+  taskPool.run(Pause({howLongMs: 4200}))
+  ->Promise.thenResolve(result => {
+    switch result {
+    | Ok(output) => res.send(. output->Tasks.output_encode->Js.Json.stringify)
+    | Error(message) => Express.status(res, 500).send(. message)
+    }
+  })
+  ->ignore
 })
 
-app.use(. Express.static(Path.join([Path.dirname, "..", "static"])))
+app.get(."/fibonacci", (. _req, res) => {
+  taskPool.run(Fibonacci({n: 20}))
+  ->Promise.thenResolve(result => {
+    switch result {
+    | Ok(output) => res.send(. output->Tasks.output_encode->Js.Json.stringify)
+    | Error(message) => Express.status(res, 500).send(. message)
+    }
+  })
+  ->ignore
+})
+
+let staticPath = Path.fromRoot(["static"])
+app.use(. Express.static(staticPath))
 
 let port = 3030
 
 app.listen(.port, () => {
-  Js.log(j`listening on port $port`)
-  worker->Worker.postMessage({"data": "test123"})
+  Js.log(j`Listening on port $port`)
+  Js.log(j`Serving static resources from $staticPath`)
+
+  Js.log(Os.cpuCount()->Int.toString ++ " CPUs")
+  Js.log(Os.cpus()->Array.map(cpu => cpu.model))
 })
