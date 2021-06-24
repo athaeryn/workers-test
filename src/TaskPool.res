@@ -1,3 +1,5 @@
+let workerPath = Path.fromRoot(["src", "TaskRunner.bs.js"])
+
 type t = {run: Tasks.input => Promise.t<result<Tasks.output, string>>}
 
 let make = () => {
@@ -6,14 +8,11 @@ let make = () => {
   Js.log(j`creating pool of $workerCount workers...`)
 
   // TODO create multiple (workerCount) workers
-  let workerPath = Path.fromRoot(["src", "TaskRunner.bs.js"])
-
   let worker = WorkerThreads.make(workerPath)
 
   {
     run: input => {
       Promise.make((resolve, _reject) => {
-        worker->WorkerThreads.postMessage(input->Tasks.input_encode)
         worker->WorkerThreads.once(
           #message(
             json => {
@@ -26,6 +25,7 @@ let make = () => {
             },
           ),
         )
+        worker->WorkerThreads.postMessage(input->Tasks.input_encode)
       })
     },
   }

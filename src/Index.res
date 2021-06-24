@@ -14,7 +14,7 @@ app.get(."/pause", (. _req, res) => {
 })
 
 app.get(."/fibonacci", (. _req, res) => {
-  taskPool.run(Fibonacci({n: 20}))
+  taskPool.run(Fibonacci({n: 45}))
   ->Promise.thenResolve(result => {
     switch result {
     | Ok(output) => res.send(. output->Tasks.output_encode->Js.Json.stringify)

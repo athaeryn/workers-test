@@ -4,6 +4,8 @@ module Pause: {
 
   @decco
   type output = {pausedFor: int}
+
+  let run: input => Promise.t<output>
 }
 
 module Fibonacci: {
@@ -12,6 +14,8 @@ module Fibonacci: {
 
   @decco
   type output = {result: int}
+
+  let run: input => Promise.t<output>
 }
 
 @decco

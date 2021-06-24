@@ -11,27 +11,46 @@
     <button id="trigger-pause">Test "Pause"</button>
     <button id="trigger-fibonacci">Test "Fibonacci"</button>
 
-    <pre id="output-pause"></pre>
+    <pre id="output"></pre>
 
     <script>
+      const init = Date.now();
+      const outputElement = document.getElementById("output");
+
+      function log(text) {
+        output.innerText += text + "\n";
+      }
+
+      function request({ name, route }) {
+        let start = Date.now() - init;
+        log(name + " request | " + start);
+        fetch(route)
+          .then((res) => res.text())
+          .then((message) => {
+            let complete = Date.now() - init;
+            log(
+              name +
+                " response | " +
+                complete +
+                " | " +
+                (complete - start) +
+                "ms"
+            );
+            log("\t" + message);
+          });
+      }
+
       document
         .getElementById("trigger-pause")
         .addEventListener("click", (e) => {
           e.preventDefault();
-          fetch("/pause")
-            .then((res) => res.text())
-            .then((message) => {
-              document.getElementById("output-pause").innerText +=
-                message + "\n";
-            });
+          request({ route: "/pause", name: "Pause" });
         });
       document
         .getElementById("trigger-fibonacci")
         .addEventListener("click", (e) => {
           e.preventDefault();
-          fetch("/fibonacci")
-            .then((res) => res.text())
-            .then((message) => alert(message));
+          request({ route: "/fibonacci", name: "Fibonacci" });
         });
     </script>
   </body>
