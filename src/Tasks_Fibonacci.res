@@ -1,7 +1,6 @@
-@decco
 type input = {n: int}
 
-@decco
+@decco.encode
 type output = {result: int}
 
 let run = Piscina.run(~name="fibonacci")

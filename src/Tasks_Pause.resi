@@ -1,7 +1,6 @@
-@decco
 type input = {howLongMs: int}
 
-@decco
+@decco.encode
 type output = {pausedFor: int}
 
 let run: Piscina.run<input, output>
