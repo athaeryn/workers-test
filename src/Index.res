@@ -1,27 +1,23 @@
 let app = Express.App.make()
 
-let taskPool = TaskPool.make()
+let taskPool = Piscina.make({"filename": Path.fromRoot(["src", "TaskRunner.bs.js"])})
 
 app.get(."/pause", (. _req, res) => {
-  taskPool.run(Pause({howLongMs: 4200}))
-  ->Promise.thenResolve(result => {
-    switch result {
-    | Ok(output) => res.send(. output->Tasks.output_encode->Js.Json.stringify)
-    | Error(message) => Express.status(res, 500).send(. message)
-    }
-  })
-  ->ignore
+  let _ =
+    taskPool
+    ->Tasks.Pause.run({howLongMs: 4200})
+    ->Promise.thenResolve(output => {
+      res.send(. output->Tasks.Pause.output_encode->Js.Json.stringify)
+    })
 })
 
 app.get(."/fibonacci", (. _req, res) => {
-  taskPool.run(Fibonacci({n: 45}))
-  ->Promise.thenResolve(result => {
-    switch result {
-    | Ok(output) => res.send(. output->Tasks.output_encode->Js.Json.stringify)
-    | Error(message) => Express.status(res, 500).send(. message)
-    }
-  })
-  ->ignore
+  let _ =
+    taskPool
+    ->Tasks.Fibonacci.run({n: 42})
+    ->Promise.thenResolve(output => {
+      res.send(. output->Tasks.Fibonacci.output_encode->Js.Json.stringify)
+    })
 })
 
 let staticPath = Path.fromRoot(["static"])

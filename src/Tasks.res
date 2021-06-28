@@ -5,7 +5,9 @@ module Pause = {
   @decco
   type output = {pausedFor: int}
 
-  let run = input => {
+  let run = Piscina.run(~name="pause")
+
+  let execute = (input): Promise.t<output> => {
     Promise.make((resolve, _) => {
       Js.Global.setTimeout(() => {
         resolve(. {pausedFor: input.howLongMs})
@@ -21,6 +23,8 @@ module Fibonacci = {
   @decco
   type output = {result: int}
 
+  let run = Piscina.run(~name="fibonacci")
+
   let rec getFib = n => {
     switch n {
     | 0 => 0
@@ -29,15 +33,9 @@ module Fibonacci = {
     }
   }
 
-  let run = input => {
+  let execute = (input) => {
     Promise.make((resolve, _reject) => {
       resolve(. {result: getFib(input.n)})
     })
   }
 }
-
-@decco
-type input = Pause(Pause.input) | Fibonacci(Fibonacci.input)
-
-@decco
-type output = Pause(Pause.output) | Fibonacci(Fibonacci.output)

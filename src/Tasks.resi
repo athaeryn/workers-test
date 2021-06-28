@@ -5,7 +5,8 @@ module Pause: {
   @decco
   type output = {pausedFor: int}
 
-  let run: input => Promise.t<output>
+  let run: Piscina.run<input, output>
+  let execute: input => Promise.t<output>
 }
 
 module Fibonacci: {
@@ -15,11 +16,6 @@ module Fibonacci: {
   @decco
   type output = {result: int}
 
-  let run: input => Promise.t<output>
+  let run: Piscina.run<input, output>
+  let execute: input => Promise.t<output>
 }
-
-@decco
-type input = Pause(Pause.input) | Fibonacci(Fibonacci.input)
-
-@decco
-type output = Pause(Pause.output) | Fibonacci(Fibonacci.output)
