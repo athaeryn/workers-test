@@ -1,2 +1,5 @@
-let pause: Tasks.Pause.input => Promise.t<Tasks.Pause.output>
-let fibonacci: Tasks.Fibonacci.input => Promise.t<Tasks.Fibonacci.output>
+open Tasks
+type task<'input, 'output> = 'input => Promise.t<'output>
+
+let pause: task<Pause.input, Pause.output>
+let fibonacci: task<Fibonacci.input, Fibonacci.output>

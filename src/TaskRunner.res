@@ -1,6 +1,9 @@
+open Tasks
 open WorkerThreads
 
 Js.log(j`Worker $threadId started`)
 
-let pause = Tasks.Pause.execute
-let fibonacci = Tasks.Fibonacci.execute
+type task<'input, 'output> = 'input => Promise.t<'output>
+
+let pause = Pause.execute
+let fibonacci = Fibonacci.execute
