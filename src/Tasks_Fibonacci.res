@@ -14,6 +14,11 @@ let rec getFib = n => {
 }
 
 let execute = input => {
+  {
+    let worker = WorkerThreads.threadId
+    Js.log(j`Worker $worker | execute Fibonacci`)
+  }
+
   Promise.make((resolve, _reject) => {
     resolve(. {result: getFib(input.n)})
   })

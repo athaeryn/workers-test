@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "res:watch": "BS_WATCH_CLEAR=1 rescript build -with-deps -w",
-    "start": "nodemon src/Index.bs.js"
+    "start": "nodemon --experimental-modules src/Index.mjs"
   },
   "keywords": [],
   "author": "Ryn Anderson",

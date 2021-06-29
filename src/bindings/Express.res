@@ -14,9 +14,9 @@ module App = {
     listen: (. int, unit => unit) => unit,
     use: (. middleware) => unit,
   }
-  @module
-  external make: unit => t = "express"
+  @module("express")
+  external make: unit => t = "default"
 }
 
-@module("express")
+@module("express") @scope("default")
 external static: string => middleware = "static"

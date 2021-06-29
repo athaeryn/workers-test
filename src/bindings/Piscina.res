@@ -1,7 +1,7 @@
 type t
 
-@module @new
-external make: {"filename": string} => t = "piscina"
+@module("piscina") @new
+external make: {"filename": string} => t = "default"
 
 @send
 external run: (t, 'input, {..}) => Promise.t<'output> = "run"
