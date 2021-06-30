@@ -1,10 +1,17 @@
 let app = Express.App.make()
 
-let taskPool = Piscina.make({"filename": Path.fromRoot(["src", "TaskRunner.mjs"])})
-
 let init = Js.Date.now()
 let now = () => {
   Js.Date.now() -. init
+}
+
+let taskPool = {
+  open DekkaiWorkers
+  let workerPath = Path.fromRoot(["src", "Worker.mjs"])
+
+  Array.makeBy(Os.cpuCount(), _ => WorkerWrapper.createWorker(workerPath, {"type": "module"}))
+  ->Promise.all
+  ->Promise.thenResolve(WorkerPool.make)
 }
 
 app.get(."/pause", (. _req, res) => {
@@ -12,12 +19,14 @@ app.get(."/pause", (. _req, res) => {
   Js.log2("REQUEST Pause @", start)
   let _ =
     taskPool
-    ->Tasks.Pause.run({howLongMs: 4200})
+    ->Promise.then(pool => {
+      Worker.Tasks.Pause.run(pool, {delay: 2000})
+    })
     ->Promise.thenResolve(output => {
       let finish = now()
       let time = Float.toString(finish -. start)
       Js.log(`COMPLETE Pause in ${time}ms`)
-      res.send(. output->Tasks.Pause.output_encode->Js.Json.stringify)
+      res.send(. output->Worker.Tasks.Pause.output_encode->Js.Json.stringify)
     })
 })
 
@@ -26,12 +35,14 @@ app.get(."/fibonacci", (. _req, res) => {
   Js.log2("REQUEST Fibonacci @", start)
   let _ =
     taskPool
-    ->Tasks.Fibonacci.run({n: 42})
+    ->Promise.then(pool => {
+      Worker.Tasks.Fibonacci.run(pool, {n: 42})
+    })
     ->Promise.thenResolve(output => {
       let finish = now()
       let time = Float.toString(finish -. start)
       Js.log(`COMPLETE Fibonacci in ${time}ms`)
-      res.send(. output->Tasks.Fibonacci.output_encode->Js.Json.stringify)
+      res.send(. output->Worker.Tasks.Fibonacci.output_encode->Js.Json.stringify)
     })
 })
 
