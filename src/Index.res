@@ -9,9 +9,15 @@ let taskPool = {
   open DekkaiWorkers
   let workerPath = Path.fromRoot(["src", "Worker.mjs"])
 
-  Array.makeBy(Os.cpuCount(), _ => WorkerWrapper.createWorker(workerPath, {"type": "module"}))
+  let workerCount = Os.cpuCount()
+
+  Array.makeBy(workerCount, _ => WorkerWrapper.createWorker(workerPath, {"type": "module"}))
   ->Promise.all
   ->Promise.thenResolve(WorkerPool.make)
+  ->Promise.thenResolve(pool => {
+    Js.log(j`Task pool workers: $workerCount`)
+    pool
+  })
 }
 
 app.get(."/pause", (. _req, res) => {
@@ -46,15 +52,10 @@ app.get(."/fibonacci", (. _req, res) => {
     })
 })
 
-let staticPath = Path.fromRoot(["static"])
-app.use(. Express.static(staticPath))
+app.use(. Express.static(Path.fromRoot(["static"])))
 
 let port = 3030
 
 app.listen(.port, () => {
   Js.log(j`Listening on port $port`)
-  Js.log(j`Serving static resources from $staticPath`)
-
-  Js.log(Os.cpuCount()->Int.toString ++ " CPUs")
-  Js.log(Os.cpus()->Array.map(cpu => cpu.model))
 })
