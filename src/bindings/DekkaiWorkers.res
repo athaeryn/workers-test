@@ -11,10 +11,10 @@ module WorkerWrapper = {
 module WorkerPool = {
   type t
 
-  type task
-
   @module("@dekkai/workers") @new
   external make: array<WorkerThreads.t> => t = "WorkerPool"
+
+  type task
 
   @send
   external makeTask: (t, string, array<'input>) => task = "makeTask"

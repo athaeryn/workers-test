@@ -1,7 +1,10 @@
 type input = {n: int}
 
 @decco.encode
-type output = {result: int}
+type output = {fib: int}
 
-let run: Piscina.run<input, output>
-let execute: input => Promise.t<output>
+let run: Types.runTask<input, output>
+
+module Worker: {
+  let run: input => Types.taskResult<output>
+}

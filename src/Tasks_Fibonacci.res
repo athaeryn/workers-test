@@ -1,25 +1,21 @@
 type input = {n: int}
 
 @decco.encode
-type output = {result: int}
+type output = {fib: int}
 
-let run = Piscina.run(~name="fibonacci")
-
-let rec getFib = n => {
-  switch n {
-  | 0 => 0
-  | 1 => 1
-  | n => getFib(n - 1) + getFib(n - 2)
-  }
+let run: Types.runTask<input, output> = (pool, input) => {
+  let task = DekkaiWorkers.WorkerPool.makeTask(pool, "fibonacci", [input])
+  pool->DekkaiWorkers.WorkerPool.scheduleTask(task)
 }
 
-let execute = input => {
-  {
-    let worker = WorkerThreads.threadId
-    Js.log(j`Worker $worker | execute Fibonacci`)
+module Worker = {
+  let rec getFib = n => {
+    switch n {
+    | 0 => 0
+    | 1 => 1
+    | n => getFib(n - 1) + getFib(n - 2)
+    }
   }
 
-  Promise.make((resolve, _reject) => {
-    resolve(. {result: getFib(input.n)})
-  })
+  let run = ({n}) => {Types.result: {fib: getFib(n)}}
 }

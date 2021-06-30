@@ -20,13 +20,13 @@ app.get(."/pause", (. _req, res) => {
   let _ =
     taskPool
     ->Promise.then(pool => {
-      Worker.Tasks.Pause.run(pool, {delay: 2000})
+      Tasks.Pause.run(pool, {delay: 2000})
     })
     ->Promise.thenResolve(output => {
       let finish = now()
       let time = Float.toString(finish -. start)
       Js.log(`COMPLETE Pause in ${time}ms`)
-      res.send(. output->Worker.Tasks.Pause.output_encode->Js.Json.stringify)
+      res.send(. output->Tasks.Pause.output_encode->Js.Json.stringify)
     })
 })
 
@@ -36,13 +36,13 @@ app.get(."/fibonacci", (. _req, res) => {
   let _ =
     taskPool
     ->Promise.then(pool => {
-      Worker.Tasks.Fibonacci.run(pool, {n: 42})
+      Tasks.Fibonacci.run(pool, {n: 42})
     })
     ->Promise.thenResolve(output => {
       let finish = now()
       let time = Float.toString(finish -. start)
       Js.log(`COMPLETE Fibonacci in ${time}ms`)
-      res.send(. output->Worker.Tasks.Fibonacci.output_encode->Js.Json.stringify)
+      res.send(. output->Tasks.Fibonacci.output_encode->Js.Json.stringify)
     })
 })
 

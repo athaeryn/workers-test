@@ -1,7 +1,10 @@
-type input = {howLongMs: int}
+type input = {delay: int}
 
 @decco.encode
-type output = {pausedFor: int}
+type output = {pausedForMs: int}
 
-let run: Piscina.run<input, output>
-let execute: input => Promise.t<output>
+let run: Types.runTask<input, output>
+
+module Worker: {
+  let run: input => Promise.t<Types.taskResult<output>>
+}

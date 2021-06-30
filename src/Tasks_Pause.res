@@ -1,19 +1,21 @@
-type input = {howLongMs: int}
+type input = {delay: int}
 
 @decco.encode
-type output = {pausedFor: int}
+type output = {pausedForMs: int}
 
-let run = Piscina.run(~name="pause")
+let run: Types.runTask<input, output> = (pool, input) => {
+  let task = DekkaiWorkers.WorkerPool.makeTask(pool, "pause", [input])
+  pool->DekkaiWorkers.WorkerPool.scheduleTask(task)
+}
 
-let execute = (input): Promise.t<output> => {
-  {
-    let worker = WorkerThreads.threadId
-    Js.log(j`Worker $worker | execute Pause`)
+module Worker = {
+  let setTimeout = delay => {
+    Promise.make((resolve, _) => {
+      let _ = Js.Global.setTimeout(() => {
+        resolve(. delay)
+      }, delay)
+    })
   }
-
-  Promise.make((resolve, _) => {
-    Js.Global.setTimeout(() => {
-      resolve(. {pausedFor: input.howLongMs})
-    }, input.howLongMs)->ignore
-  })
+  let run = ({delay}) =>
+    setTimeout(delay)->Promise.thenResolve(d => {Types.result: {pausedForMs: d}})
 }
