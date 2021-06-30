@@ -1,5 +1,12 @@
+module TaskExecutor: {
+  type t
+  type executorFn
+  let make: unit => t
+  let add: (t, string, 'a) => t
+}
+
 module WorkerInterface: {
-  let addTaskExecutor: {..} => unit
+  let addTaskExecutor: TaskExecutor.t => unit
 }
 
 module WorkerWrapper: {

@@ -1,4 +1,6 @@
 DekkaiWorkers.WorkerInterface.addTaskExecutor({
-  "fibonacci": Tasks.Fibonacci.Worker.run,
-  "pause": Tasks.Pause.Worker.run,
+  open DekkaiWorkers.TaskExecutor
+  make()
+  ->add(Tasks.Pause.id, Tasks.Pause.Worker.run)
+  ->add(Tasks.Fibonacci.id, Tasks.Fibonacci.Worker.run)
 })

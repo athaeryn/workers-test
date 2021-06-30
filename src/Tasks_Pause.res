@@ -1,10 +1,12 @@
+let id = "pause"
+
 type input = {delay: int}
 
 @decco.encode
 type output = {pausedForMs: int}
 
 let run: Types.runTask<input, output> = (pool, input) => {
-  let task = DekkaiWorkers.WorkerPool.makeTask(pool, "pause", [input])
+  let task = DekkaiWorkers.WorkerPool.makeTask(pool, id, [input])
   pool->DekkaiWorkers.WorkerPool.scheduleTask(task)
 }
 

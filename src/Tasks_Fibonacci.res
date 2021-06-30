@@ -1,10 +1,12 @@
+let id = "fibonacci"
+
 type input = {n: int}
 
 @decco.encode
 type output = {fib: int}
 
 let run: Types.runTask<input, output> = (pool, input) => {
-  let task = DekkaiWorkers.WorkerPool.makeTask(pool, "fibonacci", [input])
+  let task = DekkaiWorkers.WorkerPool.makeTask(pool, id, [input])
   pool->DekkaiWorkers.WorkerPool.scheduleTask(task)
 }
 

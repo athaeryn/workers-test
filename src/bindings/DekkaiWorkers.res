@@ -1,6 +1,18 @@
+module TaskExecutor = {
+  type executorFn
+  type t = Js.Dict.t<executorFn>
+
+  let make = () => Js.Dict.empty()
+
+  let add = (t, id, fn) => {
+    t->Js.Dict.set(id, fn->Obj.magic)
+    t
+  }
+}
+
 module WorkerInterface = {
   @module("@dekkai/workers") @scope("WorkerInterface")
-  external addTaskExecutor: {..} => unit = "addTaskExecutor"
+  external addTaskExecutor: TaskExecutor.t => unit = "addTaskExecutor"
 }
 
 module WorkerWrapper = {

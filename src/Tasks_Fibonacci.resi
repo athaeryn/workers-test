@@ -1,3 +1,5 @@
+let id: string
+
 type input = {n: int}
 
 @decco.encode

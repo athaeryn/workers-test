@@ -1,3 +1,5 @@
+let id: string
+
 type input = {delay: int}
 
 @decco.encode
