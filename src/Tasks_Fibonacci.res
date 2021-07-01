@@ -19,5 +19,5 @@ module Worker = {
     }
   }
 
-  let run = ({n}) => {Types.result: {fib: getFib(n)}}
+  let run = ({n}) => Promise.resolve({Types.result: {fib: getFib(n)}})
 }

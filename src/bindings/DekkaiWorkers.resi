@@ -1,8 +1,16 @@
+module type Task = {
+  let id: string
+  type input
+  type output
+  module Worker: {
+    let run: input => Promise.t<Types.taskResult<output>>
+  }
+}
+
 module TaskExecutor: {
   type t
   type executorFn
-  let make: unit => t
-  let add: (t, string, 'a) => t
+  let make: array<module(Task)> => t
 }
 
 module WorkerInterface: {
@@ -14,7 +22,7 @@ module WorkerWrapper: {
 }
 
 module WorkerPool: {
-  type t
+  type t = Types.Dekkai.workerPool
   let make: array<WorkerThreads.t> => t
 
   type task

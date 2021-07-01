@@ -1,12 +1,23 @@
+module type Task = {
+  let id: string
+  type input
+  type output
+  module Worker: {
+    let run: input => Promise.t<Types.taskResult<output>>
+  }
+}
+
 module TaskExecutor = {
   type executorFn
   type t = Js.Dict.t<executorFn>
 
-  let make = () => Js.Dict.empty()
-
-  let add = (t, id, fn) => {
-    t->Js.Dict.set(id, fn->Obj.magic)
-    t
+  let make = (tasks: array<module(Task)>) => {
+    tasks
+    ->Array.map(task => {
+      let module(T) = task
+      (T.id, T.Worker.run->Obj.magic)
+    })
+    ->Js.Dict.fromArray
   }
 }
 
@@ -21,7 +32,7 @@ module WorkerWrapper = {
 }
 
 module WorkerPool = {
-  type t
+  type t = Types.Dekkai.workerPool
 
   @module("@dekkai/workers") @new
   external make: array<WorkerThreads.t> => t = "WorkerPool"
